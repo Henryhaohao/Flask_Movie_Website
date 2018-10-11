@@ -1,0 +1,39 @@
+{#前台页码的统一模板#}
+
+{% macro page(data,url) -%}
+{% if data %}
+<ul class="pagination">
+    {#首页#}
+    <li><a href="{{ url_for(url,page=1) }}">首页</a></li>
+
+    {#上一页#}
+    {% if data.has_prev %}  {# 有上一页就显示 #}
+    <li><a href="{{ url_for(url,page=data.prev_num) }}">上一页</a></li>
+    {% else %} {# 没有上一页就点击没反应 #}
+    <li class="disabled"><a href="#">上一页</a></li>
+    {% endif %}
+
+    {#当前页#}
+    {% for v in data.iter_pages() %}
+        {% if v == data.page %}
+            <li class="active"><a href="#">{{ v }}</a></li> {# 是当前页就激活 #}
+        {% else %}
+           <li><a href="{{ url_for(url,page=v) }}">{{ v }}</a></li>
+        {% endif %}
+    {% endfor %}
+
+    {#下一页#}
+    {% if data.has_next %}
+    <li><a href="{{ url_for(url,page=data.next_num) }}">下一页</a></li>
+    {% else %}
+    <li class="disabled"><a href="#">下一页</a></li>
+    {% endif %}
+
+    {#尾页#}
+    <li><a href="{{ url_for(url,page=data.pages) }}">尾页</a></li>
+
+</ul>
+{% endif %}
+{%- endmacro %}
+
+

@@ -1,0 +1,60 @@
+{% extends 'home/home.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span class="glyphicon glyphicon-log-in"></span>&nbsp;用户登录</h3>
+                </div>
+                <div class="panel-body">
+                            {# 添加标签成功时的消息提示(category_filter:分类闪现) #}
+                            {% for msg in get_flashed_messages(category_filter=['ok']) %}
+                                <div class="alert alert-success alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <h4><i class="icon fa fa-check"></i> 恭喜您,操作成功 !</h4>
+                                        {{ msg }}
+                                </div>
+                            {% endfor %}
+                            {# 添加标签失败时的消息提示 #}
+                            {% for msg in get_flashed_messages(category_filter=['err']) %}
+                                <div class="alert alert-danger alert-dismissible">
+                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                    <h4><i class="icon fa fa-ban"></i> 抱歉,操作失败!</h4>
+                                        {{ msg }}
+                                </div>
+                            {% endfor %}
+                    <form role="form" method="post">
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="input_contact"><span
+                                        class="glyphicon glyphicon-user"></span>&nbsp;{{ form.name.label }}</label>
+                                {{ form.name }}
+                                {% for err in form.name.errors  %}
+                                        <div class="col-md-12">
+                                            <font style="color:red">{{ err }}</font>
+                                        </div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-12" id="error_contact"></div>
+                            <div class="form-group">
+                                <label for="input_password"><span
+                                        class="glyphicon glyphicon-lock"></span>&nbsp;{{ form.pwd.label }}</label>
+                                {{ form.pwd }}
+                                {% for err in form.pwd.errors  %}
+                                        <div class="col-md-12">
+                                            <font style="color:red">{{ err }}</font>
+                                        </div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-12" id="error_password"></div>
+                            {{ form.submit }}
+                            {{ form.csrf_token }}
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

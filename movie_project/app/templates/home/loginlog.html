@@ -1,0 +1,45 @@
+{% extends 'home/home.html' %}
+
+{% import 'ui/home_page.html' as pg %}
+
+{% block content %}
+    {% include 'home/menu.html' %}
+    <div class="col-md-9">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title"><span class="glyphicon glyphicon-map-marker"></span>&nbsp;登录日志</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <td style="width:10%">编号</td>
+                        <td style="width:30%">登录时间</td>
+                        <td style="width:30%">登录IP</td>
+                    {# <td style="width:30%">登录地址</td>#}
+                    </tr>
+                    {% for v in page_data.items %}
+                        <tr>
+                            <td>{{ v.id }}</td>
+                            <td>{{ v.addtime }}</td>
+                            <td>{{ v.ip }}</td>
+                        {# <td>云南昆明</td> #}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 text-center">
+        {# 引入后台页码模板 #}
+        {{ pg.page(page_data,'home.loginlog') }}
+    </div>
+{% endblock %}
+
+{#添加JS:当鼠标点击模块时,用于激活会员中心的登陆日志模块#}
+{% block js %}
+    <script>
+        $(document).ready(function () {
+            $('#m-4').addClass('active');
+        });
+    </script>
+{% endblock %}

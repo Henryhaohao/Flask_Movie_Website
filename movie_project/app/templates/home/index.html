@@ -1,0 +1,197 @@
+{% extends 'home/layout.html' %}
+
+{% import 'ui/home_page.html' as pg %}
+
+{% block content %}
+    <!--热门视频-->
+    <section id="hotmovie" style="margin-top:76px">
+        <div class="container">
+            <div class="row wow fadeInRight" data-wow-delay="0.6s">
+                <div class="row">
+                    <iframe class="wow fadeIn" width="100%" height="375px" frameborder=0 scrolling=no
+                            src="{{ url_for('home.animation') }}"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--热门视频-->
+    <!--视频列表-->
+    <section id="movielist">
+        <div class="container">
+            <div class="row wow fadeIn" data-wow-delay="0.6s">
+                <div class="col-md-12 table-responsive">
+                    <table class="table text-left table-bordered" id="movietags">
+                        <tr>
+                            <td style="width:10%;color: #3c6de0;font-weight: bold">&nbsp;&nbsp;&nbsp;&nbsp;视频标签</td>
+                            <td style="width:90%;">
+                                <a href="{{ url_for('home.index',page=1) }}"
+                                   class="label label-info"><span
+                                        class="glyphicon glyphicon-tag"></span>&nbsp;全部视频</a>&nbsp;&nbsp;
+                                {% for v in tags %}
+                                    <a href="{{ url_for('home.index',page=1) }}?tid={{ v.id }}&star={{ p['star'] }}&time={{ p['time'] }}&pm={{ p['pm'] }}&cm={{ p['cm'] }}"
+                                       class="label label-info"><span
+                                            class="glyphicon glyphicon-tag"></span>&nbsp;{{ v.name }}</a>
+                                    &nbsp;
+                                {% endfor %}
+                        </tr>
+                        <tr>
+                            <td style="width:10%;color: #3c6de0;font-weight: bold">&nbsp;&nbsp;&nbsp;&nbsp;视频星级</td>
+                            <td>
+                                {% for v in range(1,6) %}
+                                    <a href="{{ url_for('home.index',page=1) }}?tid={{ p['tid'] }}&star={{ v }}&time={{ p['time'] }}&pm={{ p['pm'] }}&cm={{ p['cm'] }}"
+                                       class="label label-warning"><span
+                                            class="glyphicon glyphicon-star"></span>&nbsp;{{ v }}星</a>
+                                    &nbsp;
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:10%;color: #3c6de0;font-weight: bold">&nbsp;&nbsp;&nbsp;&nbsp;添加时间</td>
+                            <td>
+                                <a href="{{ url_for('home.index',page=1) }}?tid={{ p['tid'] }}&star={{ p['star'] }}&time=1&pm={{ p['pm'] }}&cm={{ p['cm'] }}"
+                                   class="label label-default"><span
+                                        class="glyphicon glyphicon-time"></span>&nbsp;最近</a>
+                                &nbsp;
+                                <a href="{{ url_for('home.index',page=1) }}?tid={{ p['tid'] }}&star={{ p['star'] }}&time=2&pm={{ p['pm'] }}&cm={{ p['cm'] }}"
+                                   class="label label-default"><span
+                                        class="glyphicon glyphicon-time"></span>&nbsp;最早</a>
+                                &nbsp;
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:10%;color: #3c6de0;font-weight: bold">&nbsp;&nbsp;&nbsp;&nbsp;播放数量</td>
+                            <td>
+                                <a href="{{ url_for('home.index',page=1) }}?tid={{ p['tid'] }}&star={{ p['star'] }}&time={{ p['time'] }}&pm=1&cm={{ p['cm'] }}"
+                                   class="label label-success"><span class="glyphicon glyphicon-arrow-down"></span>&nbsp;从高到底</a>
+                                &nbsp;
+                                <a href="{{ url_for('home.index',page=1) }}?tid={{ p['tid'] }}&star={{ p['star'] }}&time={{ p['time'] }}&pm=2&cm={{ p['cm'] }}"
+                                   class="label label-danger"><span class="glyphicon glyphicon-arrow-up"></span>&nbsp;从低到高</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:10%;color: #3c6de0;font-weight: bold">&nbsp;&nbsp;&nbsp;&nbsp;评论数量</td>
+                            <td>
+                                <a href="{{ url_for('home.index',page=1) }}?tid={{ p['tid'] }}&star={{ p['star'] }}&time={{ p['time'] }}&pm={{ p['pm'] }}&cm=1"
+                                   class="label label-success"><span class="glyphicon glyphicon-arrow-down"></span>&nbsp;从高到底</a>
+                                &nbsp;
+                                <a href="{{ url_for('home.index',page=1) }}?tid={{ p['tid'] }}&star={{ p['star'] }}&time={{ p['time'] }}&pm={{ p['pm'] }}&cm=2"
+                                   class="label label-danger"><span class="glyphicon glyphicon-arrow-up"></span>&nbsp;从低到高</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+
+                {% for v in page_data.items %}
+                    <div class="col-md-3">
+                        <div class="movielist text-center">
+                            <!--<img data-original="holder.js/262x166"
+                                     class="img-responsive lazy center-block" alt="">-->
+{#                            <a href="{{ url_for('home.play',id=v.id,page=1) }}" target="_blank" role="button">#}
+                            <a href="{{ url_for('home.play',id=v.id,page=1) }}" role="button">
+                                <img src="{{ url_for('static',filename='uploads/' + v.logo) }}"
+                                     style="width: 300px;height: 190px"
+                                     class="img-responsive center-block" alt="{{ v.title }}" title="{{ v.title }}"></a>
+                            <div class="text-left" style="margin-left:auto;margin-right:auto;width:210px;">
+                                <span style="color:#727272;font-style: italic;font-weight: bolder">{{ v.title }}</span><br>
+                                <div>
+                                    {# 实心星星#}
+                                    {% for val in range(1,1+v.star) %}
+                                        <span class="glyphicon glyphicon-star" style="color:#FFD119"></span>
+                                    {% endfor %}
+                                    {# 空心星星#}
+                                    {% for val in range(1,6-v.star) %}
+                                        <span class="glyphicon glyphicon-star-empty" style="color:#FFD119"></span>
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+{#                            <a href="{{ url_for('home.play',id=v.id,page=1) }}" class="btn btn-primary" target="_blank"#}
+{#                               role="button"><span class="glyphicon glyphicon-play"></span>&nbsp;播放</a>#}
+                        <a href="{{ url_for('home.play',id=v.id,page=1) }}" class="btn btn-primary"
+                               role="button"><span class="glyphicon glyphicon-play"></span>&nbsp;播放</a>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="col-md-12">
+
+                    {# 引入后台页码模板 #}
+                    {{ pg.page(page_data,'home.index') }}
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--视频列表-->
+
+    <!-- 音乐播放器代码 开始 -->
+    <div id="QPlayer">
+        <div id="pContent">
+            <div id="player">
+                <span class="cover"></span>
+                <div class="ctrl">
+                    <div class="musicTag marquee">
+                        <strong>歌名</strong>
+                        <span> - </span>
+                        <span class="artist">歌手</span>
+                    </div>
+                    <div class="progress">
+                        <div class="timer left">0:00</div>
+                        <div class="contr">
+                            <div class="rewind icon"></div>
+                            <div class="playback icon"></div>
+                            <div class="fastforward icon"></div>
+                        </div>
+                        <div class="right">
+                            <div class="liebiao icon"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ssBtn">
+                <div class="adf"></div>
+            </div>
+        </div>
+        <ol id="playlist"></ol>
+    </div>
+
+    <script type="text/javascript" src="{{ url_for('static',filename='music/js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='music/js/jquery.marquee.min.js') }}"></script>
+    <script>
+        var playlist = [
+            {
+                title: "Seve",
+                artist: "Tez Cadey",
+                mp3: "{{ url_for('static',filename='uploads/music/seve.mp3') }}",
+                cover: "http://p4.music.126.net/7VJn16zrictuj5kdfW1qHA==/3264450024433083.jpg?param=106x106",
+            },
+            {
+                title: "BINGBIAN病变 (女声版)",
+                artist: "鞠文娴",
+                mp3: "{{ url_for('static',filename='uploads/music/bingbian.mp3') }}",
+                cover: "http://p4.music.126.net/7VJn16zrictuj5kdfW1qHA==/3264450024433083.jpg?param=106x106",
+            }
+        ];
+        var isRotate = true;
+        var autoplay = true;
+    </script>
+    <script type="text/javascript" src="{{ url_for('static',filename='music/js/player.js') }}"></script>
+    <script>
+        function bgChange() {
+            var lis = $('.lib');
+            for (var i = 0; i < lis.length; i += 1)
+                {#lis[i].style.background = 'rgba(246, 246, 246, 0.5)';#}
+                lis[i].style.background = 'rgba(106, 229, 161, 0.2)';
+        }
+
+        window.onload = bgChange;
+    </script>
+    <!-- 音乐播放器代码 结束 -->
+
+    {#    <embed src="{{ url_for('static',filename='uploads/Heartache - ONE OK ROCK.mp3') }}" width="140" height="60" autostart="true" loop="true">#}
+    {#    </embed>#}
+    {#    <audio src="{{ url_for('static',filename='uploads/Heartache - ONE OK ROCK.mp3') }}" autoplay="autoplay" controls="controls"></audio>#}
+
+{% endblock %}
